@@ -75,7 +75,6 @@ const PostJob = () => {
     if (isLoaded) {
       fnCompanies();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   if (!isLoaded || loadingCompanies) {
