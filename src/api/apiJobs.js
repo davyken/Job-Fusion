@@ -1,15 +1,28 @@
 import supabaseClient from "@/utils/supabase";
 
 // Fetch Jobs
-export async function getJobs(token) {
+export async function getJobs(token, { location, company_id, searchQuery }) {
   const supabase = await supabaseClient(token);
-  
-  const { data, error } = await supabase
+  let query = supabase
     .from("jobs")
-    .select("*, company: companies(name, logo_url)");
+    .select("*, saved: saved_jobs(id), company: companies(name,logo_url)");
+
+  if (location) {
+    query = query.eq("location", location);
+  }
+
+  if (company_id) {
+    query = query.eq("company_id", company_id);
+  }
+
+  if (searchQuery) {
+    query = query.ilike("title", `%${searchQuery}%`);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
-    console.error("Error fetching Jobs:", error.message);
+    console.error("Error fetching Jobs:", error);
     return null;
   }
 
@@ -56,41 +69,32 @@ export async function getSingleJob(token, { job_id }) {
 export async function saveJob(token, { alreadySaved }, saveData) {
   const supabase = await supabaseClient(token);
 
-  const userId = saveData.user_id; // Ensure this is set correctly
-  if (!userId) {
-    console.error("User ID is required to save a job.");
-    return null;
-  }
-
-  console.log("Saving job with data:", { userId, jobId: saveData.job_id });
-
   if (alreadySaved) {
-    const { data: deleteData, error: deleteError } = await supabase
+    // If the job is already saved, remove it
+    const { data, error: deleteError } = await supabase
       .from("saved_jobs")
       .delete()
-      .eq("user_id", userId)
       .eq("job_id", saveData.job_id);
 
     if (deleteError) {
       console.error("Error removing saved job:", deleteError);
-      return null;
+      return data;
     }
 
-    console.log("Job unsaved successfully:", deleteData);
-    return deleteData;
+    return data;
   } else {
-    const { data: insertData, error: insertError } = await supabase
+    // If the job is not saved, add it to saved jobs
+    const { data, error: insertError } = await supabase
       .from("saved_jobs")
-      .insert([{ user_id: userId, job_id: saveData.job_id }]) // Ensure correct structure
+      .insert([saveData])
       .select();
 
     if (insertError) {
       console.error("Error saving job:", insertError);
-      return null;
+      return data;
     }
 
-    console.log("Job saved successfully:", insertData);
-    return insertData;
+    return data;
   }
 }
 
@@ -156,9 +160,9 @@ export async function addNewJob(token, _, jobData) {
     .select();
 
   if (error) {
-    console.error("Error creating job:", error.message);
-    throw new Error("Error creating job: " + error.message);
+    console.error(error);
+    throw new Error("Error Creating Job");
   }
 
   return data;
-} 
+}
