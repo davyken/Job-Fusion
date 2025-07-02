@@ -83,10 +83,10 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
               <SelectValue placeholder="Application Status" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="applied">Applied</SelectItem>
-              <SelectItem value="interviewing">Interviewing</SelectItem>
-              <SelectItem value="hired">Hired</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="applied">applied</SelectItem>
+              <SelectItem value="interviewing">interviewing</SelectItem>
+              <SelectItem value="hired">hired</SelectItem>
+              <SelectItem value="rejected">rejected</SelectItem>
             </SelectContent>
           </Select>
         )}
