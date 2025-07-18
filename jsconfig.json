@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // Use the latest JS features
+    "module": "esnext", // Use ES modules
+    "lib": ["esnext", "dom"], // Include ESNext and DOM types
+    "strict": true, // Enable strict type checking
+    "skipLibCheck": true // Skip type checking of declaration files
+  },
+  "include": ["./**/*.ts"], // Include all TypeScript files
+  "exclude": ["node_modules"] // Exclude unnecessary directories
+}
