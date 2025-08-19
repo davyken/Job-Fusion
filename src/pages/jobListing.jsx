@@ -3,6 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 import { State } from "country-state-city";
 import { BarLoader } from "react-spinners";
 import useFetch from "@/hooks/use-fetch";
+import BackButton from "@/components/back-button";
 
 import JobCard from "@/components/job-card";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,7 @@ const JobListing = () => {
 
   return (
     <div>
+      <BackButton />
       <h1 className="gradient-title font-extrabold text-6xl sm:text-7xl text-center pb-8">
         Latest Jobs
       </h1>

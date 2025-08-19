@@ -2,6 +2,7 @@ import { getCompanies } from "@/api/apiCompanies";
 import { addNewJob } from "@/api/apiJobs";
 import AddCompanyDrawer from "@/components/add-company-drawer";
 import { Button } from "@/components/ui/button";
+import BackButton from "@/components/back-button";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -87,6 +88,7 @@ const PostJob = () => {
 
   return (
     <div>
+      <BackButton />
       <h1 className="gradient-title font-extrabold text-5xl sm:text-7xl text-center pb-8">
         Post a Job
       </h1>
