@@ -4,6 +4,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
+import BackButton from "@/components/back-button";
 
 import {
   Select,
@@ -52,6 +53,7 @@ const JobPage = () => {
 
   return (
     <div className="flex flex-col gap-8 mt-5">
+      <BackButton />
       <div className="flex flex-col-reverse gap-6 md:flex-row justify-between items-center">
         <h1 className="gradient-title font-extrabold pb-3 text-4xl sm:text-6xl">
           {job?.title}

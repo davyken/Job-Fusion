@@ -69,6 +69,13 @@ const Header = () => {
                   labelIcon={<Heart size={15} />}
                   href="/saved-jobs"
                 />
+                {user?.unsafeMetadata?.role === "candidate" && (
+                  <UserButton.Link
+                    label="Recommendations"
+                    labelIcon={<BriefcaseBusiness size={15} />}
+                    href="/recommendations"
+                  />
+                )}
                 <UserButton.Action label="manageAccount" />
               </UserButton.MenuItems>
             </UserButton>
