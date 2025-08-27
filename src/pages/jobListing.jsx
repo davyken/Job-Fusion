@@ -6,6 +6,7 @@ import useFetch from "@/hooks/use-fetch";
 import BackButton from "@/components/back-button";
 
 import JobCard from "@/components/job-card";
+import JobRecommendations from "@/components/job-recommendations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -152,6 +153,11 @@ const JobListing = () => {
             <div>No Jobs Found 😢</div>
           )}
         </div>
+      )}
+      
+      {/* Show recommendations for candidates */}
+      {user?.unsafeMetadata?.role === "candidate" && (
+        <JobRecommendations />
       )}
     </div>
   );
