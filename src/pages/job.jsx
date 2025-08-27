@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
 import BackButton from "@/components/back-button";
+import JobRecommendations from "@/components/job-recommendations";
 
 import {
   Select,
@@ -107,7 +108,7 @@ const JobPage = () => {
       </h2>
       <MDEditor.Markdown
         source={job?.requirements}
-        className="bg-transparent sm:text-lg" 
+        className="bg-transparent sm:text-lg"
       />
       {job?.recruiter_id !== user?.id && (
         <ApplyJobDrawer
@@ -127,6 +128,11 @@ const JobPage = () => {
             );
           })}
         </div>
+      )}
+      
+      {/* Show recommendations for candidates */}
+      {user?.unsafeMetadata?.role === "candidate" && (
+        <JobRecommendations />
       )}
     </div>
   );

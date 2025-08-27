@@ -1,33 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { BarLoader } from "react-spinners";
 import JobCard from "@/components/job-card";
 import { getRecommendedJobs } from "@/api/apiJobs";
+import { getUserCvData } from "@/api/apiApplication";
 import useFetch from "@/hooks/use-fetch";
 import BackButton from "@/components/back-button";
 
 const RecommendationsPage = () => {
   const { isLoaded, user } = useUser();
   
-  // In a real implementation, you would fetch the user's CV data here
-  // For now, we'll simulate this with mock data
-  const mockCvData = {
-    skills: ["JavaScript", "React", "Node.js", "HTML", "CSS"],
-    experience: "3 years",
-    education: "Bachelor's in Computer Science"
-  };
+  const {
+    data: cvData,
+    fn: fnCvData,
+  } = useFetch(getUserCvData, { user_id: user?.id });
   
   const {
     loading: loadingJobs,
     data: recommendedJobs,
     fn: fnJobs,
-  } = useFetch(getRecommendedJobs, mockCvData);
+  } = useFetch(getRecommendedJobs, cvData);
 
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && user?.id) {
+      fnCvData();
+    }
+  }, [isLoaded, user?.id]);
+
+  useEffect(() => {
+    if (cvData) {
+      console.log("CV Data in RecommendationsPage:", cvData);
       fnJobs();
     }
-  }, [isLoaded]);
+  }, [cvData]);
 
   if (!isLoaded) {
     return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;

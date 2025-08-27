@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { BarLoader } from "react-spinners";
 import JobCard from "@/components/job-card";
 import { getRecommendedJobs } from "@/api/apiJobs";
+import { getUserCvData } from "@/api/apiApplication";
 import useFetch from "@/hooks/use-fetch";
 
-const JobRecommendations = ({ cvData }) => {
+const JobRecommendations = () => {
   const { isLoaded, user } = useUser();
+  
+  const {
+    data: cvData,
+    fn: fnCvData,
+  } = useFetch(getUserCvData, { user_id: user?.id });
   
   const {
     loading: loadingJobs,
@@ -15,12 +21,19 @@ const JobRecommendations = ({ cvData }) => {
   } = useFetch(getRecommendedJobs, cvData);
 
   useEffect(() => {
-    if (isLoaded && cvData && user?.unsafeMetadata?.role === "candidate") {
+    if (isLoaded && user?.id && user?.unsafeMetadata?.role === "candidate") {
+      fnCvData();
+    }
+  }, [isLoaded, user?.id]);
+
+  useEffect(() => {
+    if (cvData) {
+      console.log("CV Data in JobRecommendations:", cvData);
       fnJobs();
     }
-  }, [isLoaded, cvData, user]);
+  }, [cvData]);
 
-  if (!isLoaded || !cvData) {
+  if (!isLoaded || user?.unsafeMetadata?.role !== "candidate") {
     return null;
   }
 
@@ -31,12 +44,18 @@ const JobRecommendations = ({ cvData }) => {
       
       {!loadingJobs && recommendedJobs?.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {recommendedJobs.slice(0, 3).map((job) => (
-            <JobCard
-              key={job.id}
-              job={job}
-              savedInit={job?.saved?.length > 0}
-            />
+          {recommendedJobs.slice(0, 6).map((job) => (
+            <div key={job.id} className="relative">
+              {job.matchScore && (
+                <div className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
+                  {job.matchScore}/10 match
+                </div>
+              )}
+              <JobCard
+                job={job}
+                savedInit={job?.saved?.length > 0}
+              />
+            </div>
           ))}
         </div>
       ) : (

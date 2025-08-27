@@ -64,3 +64,26 @@ export async function getApplications(token, { user_id }) {
 
   return data;
 }
+
+// Get user's CV data from applications table
+export async function getUserCvData(token, { user_id }) {
+  const supabase = await supabaseClient(token);
+  
+  // Get the most recent application with CV data
+  const { data, error } = await supabase
+    .from("applications")
+    .select("skills, experience, education")
+    .eq("candidate_id", user_id)
+    .not("skills", "is", null)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error) {
+    console.error("Error fetching CV data:", error);
+    return null;
+  }
+
+  console.log("Raw CV Data from DB:", data);
+  return data;
+}
