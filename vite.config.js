@@ -14,15 +14,43 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-scroll-area', '@radix-ui/react-label', '@radix-ui/react-dialog'],
-          clerk: ['@clerk/clerk-react'],
-          supabase: ['@supabase/supabase-js'],
-          utils: ['lucide-react', 'react-router-dom', 'react-hook-form'],
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'ui';
+            }
+            if (id.includes('@clerk')) {
+              return 'clerk';
+            }
+            if (id.includes('@supabase')) {
+              return 'supabase';
+            }
+            if (id.includes('lucide-react')) {
+              return 'icons';
+            }
+            if (id.includes('react-router') || id.includes('react-hook-form')) {
+              return 'routing';
+            }
+            if (id.includes('@uiw/react-md-editor') || id.includes('mammoth') || id.includes('react-markdown')) {
+              return 'editor';
+            }
+            if (id.includes('refractor') || id.includes('prism')) {
+              return 'syntax';
+            }
+            if (id.includes('mammoth') || id.includes('xlsx') || id.includes('pdf')) {
+              return 'file-processing';
+            }
+            if (id.includes('react-spinners') || id.includes('country-state-city')) {
+              return 'ui-libs';
+            }
+            return 'vendor';
+          }
         },
       },
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 10000,
   },
 });

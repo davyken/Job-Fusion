@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
+  console.log("LandingPage component rendering");
   return (
     <main className="flex flex-col gap-10 sm:gap-20 py-10 sm:py-20">
       <section className="text-center ">

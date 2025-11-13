@@ -7,7 +7,7 @@ import { shadesOfPurple, dark, neobrutalism } from "@clerk/themes";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-console.log("PUBLISHABLE_KEY:");
+console.log("PUBLISHABLE_KEY:", PUBLISHABLE_KEY);
 
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
@@ -26,3 +26,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </ClerkProvider>
   </React.StrictMode>
 );
+
+// Add error boundary for debugging
+window.addEventListener('error', (event) => {
+  console.error('Global error:', event.error);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+});
