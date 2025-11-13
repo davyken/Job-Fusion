@@ -8,7 +8,7 @@ import {
   useUser,
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
-import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
+import { BriefcaseBusiness, Heart, PenBox, Upload } from "lucide-react";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -70,11 +70,18 @@ const Header = () => {
                   href="/saved-jobs"
                 />
                 {user?.unsafeMetadata?.role === "candidate" && (
-                  <UserButton.Link
-                    label="Recommendations"
-                    labelIcon={<BriefcaseBusiness size={15} />}
-                    href="/recommendations"
-                  />
+                  <>
+                    <UserButton.Link
+                      label="Upload CV"
+                      labelIcon={<Upload size={15} />}
+                      href="/cv-upload"
+                    />
+                    <UserButton.Link
+                      label="Recommendations"
+                      labelIcon={<BriefcaseBusiness size={15} />}
+                      href="/recommendations"
+                    />
+                  </>
                 )}
                 <UserButton.Action label="manageAccount" />
               </UserButton.MenuItems>

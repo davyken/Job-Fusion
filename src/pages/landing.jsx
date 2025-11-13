@@ -37,6 +37,11 @@ const LandingPage = () => {
             Find Jobs
           </Button>
         </Link>
+        <Link to={"/cv-upload"}>
+          <Button variant="outline" size="xl">
+            Upload CV for AI Recommendations
+          </Button>
+        </Link>
         <Link to={"/post-job"}>
           <Button variant="destructive" size="xl">
             Post a Job
