@@ -11,6 +11,7 @@ import MyJobs from "./pages/my-jobs";
 import SavedJobs from "./pages/saved-jobs";
 import JobPage from "./pages/job";
 import RecommendationsPage from "./pages/recommendations";
+import CVUploadPage from "./pages/cv-upload";
 
 import "./App.css";
 
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <RecommendationsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/cv-upload",
+        element: (
+          <ProtectedRoute>
+            <CVUploadPage />
           </ProtectedRoute>
         ),
       },
